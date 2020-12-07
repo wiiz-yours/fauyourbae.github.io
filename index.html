@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	  <title>SIMP</title>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2@2.0.0/dist/spectrum.min.css">
+	  <style type="text/css">
+	  	body{
+	  		overflow: hidden;
+	  		background: black;
+	  		width: 100%;
+	  		height: 100vh;
+	  	}
+	  	.bg{
+	  		width: 100%;
+	  		height: 100vh;
+	  		position: absolute;
+	  		z-index: -1;
+	  	}
+	  	.cc{
+	  		position: fixed;
+	  		color: #FFFFFF30;
+	  		z-index: 10;
+	  		top: 0;
+	  		right: 0;
+	  		font-size: 10pt;
+	  		font-weight: lighter;
+	  	}
+	  	
+		.preload{
+			position: absolute;
+			height: 100vh;
+			line-height: 100vh;
+			width: 100vw;
+			background: #000000E0;
+			backdrop-filter: blur(10px);
+			font-weight: lighter;
+			font-size: 20pt;
+			z-index: 100;
+			text-align: center;
+			color: #FFFFFF;
+			opacity: 1;
+			transition: all ease 1s;
+			font-family: monospace;
+		}
+		
+		.myoverlay{
+			backdrop-filter: blur(7px);
+		}
+	  	.mywindow{
+	  		background: #ECECEC;
+	  		position: absolute;
+	  		left: calc(50% - 250px);
+	  		top: calc(50% - 120px);
+	  		font-size: 12pt;
+	  		border-radius: 10px;
+	  		border: 1px solid #C6C6C6;
+	  		box-shadow: 0px 0px 10px #00000020;
+	  		
+	  	}
+	  	.myanimated{
+	  		transition: all ease 0.3s;
+	  	}
+	  	.mycontrol{
+	  		position: absolute;
+	  		display: inline-block;	
+	  		height: 30px;
+	  		left: 10px;
+	  		padding: 0px 5px;
+	  	}
+	  	.myheader{
+	  		color: #767676;
+	  		text-align: center;
+	  		font-weight: bold;
+	  		display: inline-block;
+	  		width: 100%;
+	  		height: 30px;
+	  		line-height: 30px;
+	  		border-radius: 10px 10px 0 0;
+	  		background: rgb(209,209,209);
+			background: linear-gradient(0deg, rgba(209,209,209,1) 0%, rgba(229,229,232,1) 100%);
+			border-bottom: 1px solid #C6C6C6;
+
+	  	}
+	  	.myclose, .mymini, .mymax{
+	  		display: inline-block;
+	  		width: 12px;
+	  		height: 12px;
+	  		margin-top: 8px;
+	  		border-radius: 10px;
+	  		margin-right: 2px;
+	  	}
+	  	.myclose{
+	  		background: #FE5D56;
+	  		border: 1px solid #EA3E4A;
+	  	}
+	  	.myclose:hover{
+	  		background: #EA3E4A;
+	  	}
+	  	.mymini{
+	  		background: #F6BD28;
+	  		border: 1px solid #F8AE1C;
+	  	}
+	  	.mymini:hover{
+	  		background: #F8AE1C;
+	  	}
+	  	.mymax{
+	  		background: #26CD3C;
+	  		border: 1px solid #4BBA54;
+	  	}
+	  	.mymax:hover{
+	  		background: #4BBA54;
+	  	}
+	  	.mybody{
+	  		padding: 30px;
+	  		padding-bottom: 100px;
+	  	}
+	  	.mytitle{
+	  		font-weight: bold;
+	  		font-size: 14pt;
+	  		margin-bottom: 10px;
+	  	}
+	  	/* .mycontent{
+
+	  	} */
+	  	.mytext{
+	  		width: 350px;
+			border-radius: 7px;
+			padding: 5px;
+			margin-left: 10px;
+			box-sizing: border-box;
+			border: 3px solid #dcdcdca0;
+			-webkit-transition: 0.3s;
+			transition: 0.3s;
+			outline: none;
+	  	}
+	  	.mytext:focus{
+	  		border: 3px solid rgba(10,107,254,0.5);
+	  		/*transform: translateY(-2px);*/
+	  	}
+	  	.mytext:hover{
+	  		cursor: text;
+	  	}
+	  	.mybutton{
+	  		position: absolute;
+	  		height: 30px;
+	  		line-height: 30px;
+	  		bottom: 20px;
+	  		right: 20px;
+	  	}
+	  	.mybuttonyes, .mybuttonno{
+	  		display: inline-block;
+	  		width: 80px;
+	  		background: cyan;
+	  		height: 30px;
+	  		line-height: 30px;
+	  		margin-top: 0px;
+	  		text-align: center;
+	  		border-radius: 5px;
+	  		margin-left: 10px; 
+	  		font-weight:  600;
+	  	}
+	  	.mybuttonyes{
+	  		background: rgb(10,107,254);
+			background: linear-gradient(0deg, rgba(10,107,254,1) 0%, rgba(106,163,252,1) 100%);
+			color: #FFFFFF;
+	  		border: 1px solid #015FFC;
+	  	}
+	  	.mybuttonyes:hover{
+	  		background: rgb(10,107,254);
+	  	}
+	  	.mybuttonno{
+	  		background: #FFFFFF;
+	  		border: 1px solid #C6C6C6;
+	  	}
+	  	.mybuttonno:hover{
+	  		background: #EDEDED;
+	  	}
+	  	.myresize{
+	  		width: 15px;
+			height: 15px;
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			cursor: se-resize;
+	  	}
+	  	.vidcont{
+	  		width: 100vw;
+	  		height: 100vh;
+	  		position: absolute;
+	  		display: none;
+	  		background: #000000A0;
+	  		z-index: 2;
+	  	}
+	  	.myhide{
+	  		display: none;
+	  	}
+	  	.vidcont:hover{
+	  		cursor: none;
+	  	}
+	  	video:hover{
+	  		cursor: none;
+	  	}
+	  	video{
+			position: relative;
+			left: 0;
+			top: 0;
+			opacity: 1;
+	  	}
+	  	.divvideo{
+			width: 688px;
+			height: 576px;
+			border-radius: 20px;
+			overflow: hidden;
+			position: relative;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			z-index: 10;
+	  	}
+	  	.myclock{
+	  		display: none;
+	  		position: absolute;
+	  		z-index: 2;
+	  		margin-top: 30%;
+			margin-left: -5%;
+	  		text-align: center;
+	  		width: calc(100vw - 50px);
+	  		/* padding: 25px; */
+	  	}
+	  
+	  	#oke:hover{
+	  		background: #FFFFFF30;
+	  		cursor: pointer;
+	  	}
+	  	.shortcut{
+	  		position: fixed;
+	  		bottom: 0;
+	  		width: 100px;
+	  		height: 70px;
+	  		line-height: 70px;
+	  		background: #FFFFFF10;
+	  		margin: 10px;
+	  		border-radius: 20px;
+	  		cursor: pointer;
+	  		transition: transform ease 0.3s;
+	  		backdrop-filter: blur(3px);
+	  	}
+	  	.shortcut:hover{
+	  		transform: scale(1.1);
+	  		backdrop-filter: blur(5px);
+	  	}
+	  	.shortcut:active{
+	  		transform: scale(0.9);
+	  		backdrop-filter: blur(5px);
+	  	}
+	  	.kiri{
+	  		left: 0;
+	  	}
+	  	.kanan{
+	  		right: 0;
+	  	}
+	  	.ubuntu{
+	  		background: linear-gradient(to left,#8942A8,#BA382F);
+	  		opacity: 0;
+	  	}
+	  	.dawn{
+	  		background: linear-gradient(0deg, rgba(133,26,0,1) 3%, rgba(255,51,0,1) 19%, rgba(181,103,47,1) 45%, rgba(52,142,200,1) 100%);
+	  		opacity: 0;
+	  	}
+	  	.morning{
+	  		background: linear-gradient(0deg, rgba(255,230,113,1) 0%, rgba(82,167,255,1) 100%);
+	  		opacity: 0;
+	  	}
+	  	.noon{
+	  		background: linear-gradient(0deg, rgba(22,183,255,1) 0%, rgba(14,116,223,1) 58%, rgba(1,7,170,1) 100%);
+	  		opacity: 0;
+	  	}
+	  	.afternoon{
+	  		background: linear-gradient(0deg, rgba(161,133,255,1) 0%, rgba(0,118,226,1) 61%, rgba(1,81,170,1) 100%);
+	  		opacity: 0;
+	  	}
+	  	.sunset{
+	  		background: linear-gradient(0deg, rgba(195,75,42,1) 0%, rgba(129,29,121,1) 8%, rgba(89,1,170,1) 29%, rgba(1,5,79,1) 90%);
+	  		opacity: 0;
+	  	}
+	  	.evening{
+	  		background: linear-gradient(0deg, rgba(0,7,128,1) 0%, rgba(0,3,54,1) 100%);
+	  		opacity: 0;
+	  	}
+	  	.midnight{
+	  		background: linear-gradient(0deg, rgba(0,3,60,1) 0%, rgba(0,0,0,1) 100%);
+	  		opacity: 0;
+	  	}
+	  	.red{
+	  		background: linear-gradient(90deg, rgba(255,0,255,1) 0%, rgba(255,0,0,1) 50%, rgba(255,255,0,1) 100%);
+	  		opacity: 0;
+	  	}
+	  	.green{
+	  		background: linear-gradient(90deg, rgba(255,255,0,1) 0%, rgba(0,255,0,1) 50%, rgba(0,255,255,1) 100%);
+	  		opacity: 0;
+	  	}
+	  	.blue{
+	  		background: linear-gradient(90deg, rgba(0,255,255,1) 0%, rgba(0,0,255,1) 50%, rgba(255,0,255,1) 100%);
+	  		opacity: 0;
+	  	}
+	  	.jam,.ucapan,.quotes{
+	  		margin: 0px;
+	  		padding: 0px;
+	  		position: absolute;
+	  		color: #fff;
+	  		transition: all 5s ease, color 1s ease;
+	  	}
+	  	.jam{
+	  		opacity: 0;
+	  		font-size: 100pt;
+	  		left: 50%;
+	  		bottom: 50%;
+	  		transform: translate(-50%,calc(50% - 0px));
+	  	}
+	  	.ucapan{
+	  		font-size: 25pt;
+	  		left: 50%;
+	  		bottom: 50%;
+	  		text-align: center;
+	  		transform: translate(-50%,calc(50% + 100px));
+	  	}
+	  	.note{
+	  		color: white;
+	  		transition: all 2s ease;
+	  		opacity: 0;
+	  		position: absolute;
+	  		top: 50%;
+	  		left: 50%;
+	  		transform: translate(-50%,-50%);
+	  		font-size: 20pt;
+	  		text-align: center;
+	  		width: 100vh;
+	  	}
+  		.kotak{
+  			position: absolute;
+  			top: 0;
+  			left: 0;
+  			width: 100%;
+  			height: 100%;
+  			overflow: hidden;
+  			z-index: -1;
+  		}
+  		.kotak li{
+  			position: absolute;
+  			display: block;
+  			list-style: none;
+  			width: 25px;
+  			height: 25px;
+  			background: rgba(255,255,255,0.2);
+  			animation: animate 20s linear infinite; 
+  			bottom: -150px;
+  			transition: all 1s ease;
+  		}
+  		.kotak li:nth-child(1){
+  			left: 86%;
+  			width: 80px;
+  			height: 80px;
+  			animation-delay: 0s;
+  		}
+  		.kotak li:nth-child(2){
+  			left: 12%;
+  			width: 30px;
+  			height: 30px;
+  			animation-delay: 1.5s;
+  			animation-duration: 10s;
+  		}
+  		.kotak li:nth-child(3){
+  			left: 70%;
+  			width: 100px;
+  			height: 100px;
+  			animation-delay: 5.5s;
+  		}
+  		.kotak li:nth-child(4){
+  			left: 42%;
+  			width: 150px;
+  			height: 150px;
+  			animation-delay: 0s;
+  			animation-duration: 15s; 
+  		}
+  		.kotak li:nth-child(5){
+  			left: 15%;
+  			width: 110px;
+  			height: 110px;
+  			animation-delay: 3.5s;
+  		}
+  		.bulat{
+  			position: absolute;
+  			width: 600px;
+  			height: 600px;
+  			display: flex;
+  			left:50%;
+	  		bottom: 50%;
+	  		transform: translate(-50%,50%) scale(0);
+	  		transition: 3s all ease;
+  		}
+  		.bulat span:nth-child(1){
+  			position: absolute;
+  			top: 0;
+  			left: 0;
+  			width: 100%;
+  			height: 100%;
+  			border: 2px solid #fff;
+  			border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+  			transition: 0.5s;
+  			animation: animate2 6s linear infinite;
+  		}
+  		.bulat span:nth-child(2){
+  			position: absolute;
+  			top: 0;
+  			left: 0;
+  			width: 100%;
+  			height: 100%;
+  			border: 2px solid #fff;
+  			border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+  			transition: 0.5s;
+  			animation: animate3 4s linear infinite;
+  		}
+  		.bulat span:nth-child(3){
+  			position: absolute;
+  			top: 0;
+  			left: 0;
+  			width: 100%;
+  			height: 100%;
+  			border: 5px solid #fff;
+  			border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+  			transition: 0.5s;
+  			animation: animate2 10s linear infinite;
+  		}
+  		
+  		@keyframes animate{
+  			0%{
+  				transform: translateY(0) rotate(0deg);
+  				opacity: 1;
+  			}
+  			100%{
+  				transform: translateY(-100vh) rotate(360deg);
+  				opacity: 0;
+  			}
+  		}
+  		@keyframes animate2{
+  			0%{
+  				transform:rotate(0deg);
+  			}
+  			100%{
+  				transform:rotate(360deg);
+  			}
+  		}
+  		@keyframes animate3{
+  			0%{
+  				transform:rotate(360deg);
+  			}
+  			100%{
+  				transform:rotate(0deg);
+  			}
+  		}
+  		@media only screen and (max-width: 900px), screen and (max-height: 700px) {
+  			.jam,.ucapan{
+  				transition: all 1s ease;
+  			}
+			.jam{
+		  		font-size: 57pt;
+		  		transform: translate(-50%,calc(50% - 0px));
+		  	}
+		  	.ucapan{
+		  		font-size: 20pt;
+		  		transform: translate(-50%,calc(50% + 50px));
+		  	}
+		  	.quotes,.note{
+		  		font-size: 20pt;
+		  	}
+		  	.bulat{
+	  			width: 500px;
+	  			height: 500px;
+	  		}
+  		}
+  		@media only screen and (max-width: 500px){
+  			.ucapan{
+		  		font-size: 10pt;
+		  	}
+		  	.quotes{
+		  		font-size: 7pt;
+		  	}
+		  	.note{
+		  		font-size: 10pt;
+		  	}
+  		}
+	  </style>
+	</head>
+	<body onload="init()">
+		<div class="bg ubuntu"></div>
+		<div class="bg dawn"></div>
+		<div class="bg morning"></div>
+		<div class="bg noon"></div>
+		<div class="bg afternoon"></div>
+		<div class="bg sunset"></div>
+		<div class="bg evening"></div>
+		<div class="bg midnight"></div>
+		<div class="bg red"></div>
+		<div class="bg green"></div>
+		<div class="bg blue"></div>
+		<div class="bg custom"></div>
+		<audio id="myAudio">
+			<source src="music.mp3" type="audio/mpeg">
+			Your browser does not support the audio element.
+		</audio>
+		<audio id="myOpening">
+			<source src="opening.mp3" type="audio/mpeg">
+			Your browser does not support the audio element.
+		</audio>
+		<div class="preload">PLEASE WAIT</div>
+		<div class="vidcont myoverlay">
+			<div class="divvideo">
+				<video id="myVideo" width="100%" height="100%">
+				  <source src="video.mp4" type="video/mp4">
+				  Your browser doe`s not support HTML5 video.
+				</video>
+			</div>
+		</div>
+		<div class="container">
+			<ul class="kotak">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			
+			<div class="myclock">
+				<div class="bulat" >
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+				<div class="jam" id="time" >
+					00:00:00
+				</div>
+				<div class="ucapan" id="quote"></div>
+			</div>
+			<div class="mywindow" id="myform" style="width: 500px; height: 240px">
+				<div class="myheader">
+					Message
+				</div>
+				<div class="mybody">
+					<div class="mytitle">
+						I'm Sorry
+					</div>
+					<div class="mycontent">
+						Maafin kalau ada yang bikin kamu sakit hati dan bt<br>
+						dan aku nya gak sadar akan hal itu, maafin gak peka yah <br>
+						Buka yah block nya aku ? Oke hehe
+						<input hidden class="mytext" type="text" id="value" value="Salma" name="nama">
+					</div>
+					<div class="mybutton">
+						<div class="mybuttonyes" onclick="mywrite()">Next</div>
+					</div>
+				</div>	
+			</div>
+			<div class="mywindow myanimated myhide" id="mywindow" style="width: 500px; height: 240px">
+				<div class="mycontrol">
+					<div class="myclose" onclick="reverse()"></div>
+					<div class="mymini"></div>
+					<div class="mymax"></div>
+				</div>
+				<div class="myheader" id="mywindowheader">
+					Hello <span id="spannama"></span>
+				</div>
+				<div class="mybody">
+					<div class="mytitle">
+						I love you
+					</div>
+					<div class="mycontent">
+						Kalau udah di disini berarti kamu udah maafin aku<br>
+						Makasih yah, Jangan kesel, Sayang juga kan sama aku ? <br>
+					</div>
+					<div class="mybutton">
+						<div class="mybuttonno" onmouseover="move()" onclick="move2()" >No</div>
+						<div class="mybuttonyes" onclick="playVid()">Yes</div>
+					</div>
+				</div>
+				<div class="myresize"></div>
+			</div>
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2@2.0.0/dist/spectrum.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/baffle@0.3.6/dist/baffle.min.js"></script>
+		<script type="text/javascript">
+			namaku='Salma';
+			blur="true"; 
+			$(window).on('load',function(){
+				$('.preload').css('background','#00000000').css('color','#FFFFFF00').css('backdrop-filter','blur(0px)').text('SELESAI').css('z-index','-2');
+			});
+	  		function init(){
+	  			init_auto()
+	  			stopOpening();
+	  			$('body').append(add);
+	  			if(localStorage.getItem("nama") != null && localStorage.getItem("checked") == "yoi"){
+		  			namaku='Salma';
+		  			myclock();
+		  		}else if(localStorage.getItem("nama") != null){
+		  			mystart();
+		  		}
+		  		if(localStorage.getItem("blur")=="true"){
+		  			wpblur();
+		  		}
+
+	  		}
+	  		baffleEffect = baffle('.note', {
+			    characters: 'supercalifragilisticexpialidocious',
+			    speed: 150
+			});
+
+			function createNote(isi){
+				$(".jam").css("font-size","30pt").css("bottom","calc( 50% - 50px )");
+				$(".ucapan").css("opacity","0");
+				$(".quotes").css("opacity","0");
+				$(".quotes").css("opacity","0");
+				$(".bulat").css("opacity","0");
+				$(".kotak li").css("opacity","0");
+				setTimeout(function() { writeNote(isi); }, 3000);
+			}
+			function writeNote(isi){
+				$(".note").text(isi).css("opacity","1");
+
+				baffle('.note')
+					.reveal(2000)
+				    .start()
+				    .set({
+				        characters: '░░█ /<▒▓▒ ▒░▒█/ █/▒ ▒▓/█▒ ▓▒░▓ ██░ ▒░▓░ ▒░▓█',
+				        speed: 150
+				    });
+				    localStorage.setItem("manualColor", "#0079FF");
+			}
+			$(".panah").click(function(){
+				if (tombol==false){
+					$(".panah").css("transform","rotate(225deg)");
+					$(".kontrol").animate({left: "0px"});
+					tombol=true;
+				}else if (tombol==true){
+					$(".panah").css("transform","rotate(45deg)");
+					$(".kontrol").animate({left: "-220px"});
+					tombol=false;
+				}
+			});
+			auto=false;
+			cek=false;
+		
+			function ubuntu(){
+				$(".ubuntu").animate({opacity:"1"},1000);
+				$(".dawn").animate({opacity:"0"},500);
+				$(".morning").animate({opacity:"0"},500);
+				$(".noon").animate({opacity:"0"},500);
+				$(".afternoon").animate({opacity:"0"},500);
+				$(".sunset").animate({opacity:"0"},500);
+				$(".evening").animate({opacity:"0"},500);
+				$(".midnight").animate({opacity:"0"},500);
+				$(".red").animate({opacity:"0"},500);
+				$(".green").animate({opacity:"0"},500);
+				$(".blue").animate({opacity:"0"},500);
+				$(".custom").animate({opacity:"0"},500);
+				white();
+			}
+			function dawn(){
+				$(".dawn").animate({opacity:"1"},1000);
+				$(".ubuntu").animate({opacity:"0"},500);
+				$(".morning").animate({opacity:"0"},500);
+				$(".noon").animate({opacity:"0"},500);
+				$(".afternoon").animate({opacity:"0"},500);
+				$(".sunset").animate({opacity:"0"},500);
+				$(".evening").animate({opacity:"0"},500);
+				$(".midnight").animate({opacity:"0"},500);
+				$(".red").animate({opacity:"0"},500);
+				$(".green").animate({opacity:"0"},500);
+				$(".blue").animate({opacity:"0"},500);
+				$(".custom").animate({opacity:"0"},500);
+				black();
+			}
+			function morning(){
+				$(".morning").animate({opacity:"1"},1000);
+				$(".dawn").animate({opacity:"0"},500);
+				$(".ubuntu").animate({opacity:"0"},500);
+				$(".noon").animate({opacity:"0"},500);
+				$(".afternoon").animate({opacity:"0"},500);
+				$(".sunset").animate({opacity:"0"},500);
+				$(".evening").animate({opacity:"0"},500);
+				$(".midnight").animate({opacity:"0"},500);
+				$(".red").animate({opacity:"0"},500);
+				$(".green").animate({opacity:"0"},500);
+				$(".blue").animate({opacity:"0"},500);
+				$(".custom").animate({opacity:"0"},500);
+				black();
+			}
+			function noon(){
+				$(".noon").animate({opacity:"1"},1000);
+				$(".dawn").animate({opacity:"0"},500);
+				$(".ubuntu").animate({opacity:"0"},500);
+				$(".morning").animate({opacity:"0"},500);
+				$(".afternoon").animate({opacity:"0"},500);
+				$(".sunset").animate({opacity:"0"},500);
+				$(".evening").animate({opacity:"0"},500);
+				$(".midnight").animate({opacity:"0"},500);
+				$(".red").animate({opacity:"0"},500);
+				$(".green").animate({opacity:"0"},500);
+				$(".blue").animate({opacity:"0"},500);
+				$(".custom").animate({opacity:"0"},500);
+				black();
+			}
+			function afternoon(){
+				$(".afternoon").animate({opacity:"1"},1000);
+				$(".dawn").animate({opacity:"0"},500);
+				$(".ubuntu").animate({opacity:"0"},500);
+				$(".morning").animate({opacity:"0"},500);
+				$(".noon").animate({opacity:"0"},500);
+				$(".sunset").animate({opacity:"0"},500);
+				$(".evening").animate({opacity:"0"},500);
+				$(".midnight").animate({opacity:"0"},500);
+				$(".red").animate({opacity:"0"},500);
+				$(".green").animate({opacity:"0"},500);
+				$(".blue").animate({opacity:"0"},500);
+				$(".custom").animate({opacity:"0"},500);
+				black();
+			}
+			function sunset(){
+				$(".sunset").animate({opacity:"1"},1000);
+				$(".dawn").animate({opacity:"0"},500);
+				$(".ubuntu").animate({opacity:"0"},500);
+				$(".morning").animate({opacity:"0"},500);
+				$(".noon").animate({opacity:"0"},500);
+				$(".afternoon").animate({opacity:"0"},500);
+				$(".evening").animate({opacity:"0"},500);
+				$(".midnight").animate({opacity:"0"},500);
+				$(".red").animate({opacity:"0"},500);
+				$(".green").animate({opacity:"0"},500);
+				$(".blue").animate({opacity:"0"},500);
+				$(".custom").animate({opacity:"0"},500);
+				white();
+			}
+			function evening(){
+				$(".evening").animate({opacity:"1"},1000);
+				$(".dawn").animate({opacity:"0"},500);
+				$(".ubuntu").animate({opacity:"0"},500);
+				$(".morning").animate({opacity:"0"},500);
+				$(".noon").animate({opacity:"0"},500);
+				$(".afternoon").animate({opacity:"0"},500);
+				$(".sunset").animate({opacity:"0"},500);
+				$(".midnight").animate({opacity:"0"},500);
+				$(".red").animate({opacity:"0"},500);
+				$(".green").animate({opacity:"0"},500);
+				$(".blue").animate({opacity:"0"},500);
+				$(".custom").animate({opacity:"0"},500);
+				white();
+			}
+			function midnight(){
+				$(".midnight").animate({opacity:"1"},1000);
+				$(".dawn").animate({opacity:"0"},500);
+				$(".ubuntu").animate({opacity:"0"},500);
+				$(".morning").animate({opacity:"0"},500);
+				$(".noon").animate({opacity:"0"},500);
+				$(".afternoon").animate({opacity:"0"},500);
+				$(".sunset").animate({opacity:"0"},500);
+				$(".evening").animate({opacity:"0"},500);
+				$(".red").animate({opacity:"0"},500);
+				$(".green").animate({opacity:"0"},500);
+				$(".blue").animate({opacity:"0"},500);
+				$(".custom").animate({opacity:"0"},500);
+				white();
+			}
+			
+			function checkTime(i) {
+				if (i < 10) {
+						i = "0" + i;
+					}
+				return i;
+			}
+			var H;
+			var M;
+			var S;
+			var starting=true;
+			function startTime() {
+				var today = new Date();
+				var h = today.getHours();
+				var m = today.getMinutes();
+				var s = today.getSeconds();
+
+				H=h;
+				M=m;
+				S=s;
+
+				if (H<5){
+					txt='Have a Good Dawn, Down Forget to pray';
+					
+				}
+				else if(H<9){
+					txt='Good Morning, Have a Good Days';
+					
+				}
+				else if(H<12){
+					txt='Be Happy Today';
+					
+				}
+				else if(H<16){
+					txt='Good Afternoon Dear';
+					
+				}
+				else if(H<19){
+					txt='Good Afternoon, Take a Rest';
+					
+				}
+				else if(H<23){
+					txt='Good Evening Sweetie';
+					
+				}
+				else if(H<=24){
+					txt='Time to Sleep, Good Night';
+				}
+				starting=false;
+
+				if (auto && m==0 && s==0){
+					if ((h>23) || (h<4)){
+						midnight();
+					}
+					else if(h<6){
+						dawn();
+					}
+					else if(h<9){
+						morning();
+					}
+					else if(h<17){
+						noon();
+					}
+					else if(h<18){
+						afternoon();
+					}
+					else if(h<19){
+						sunset();
+					}
+					else if(h<23){
+						evening();
+					}
+				}
+
+				// add a zero in front of numbers<10
+				m = checkTime(m);
+				s = checkTime(s);
+				document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+				t = setTimeout(function() {
+				startTime()
+				}, 500);
+			}
+			startTime();
+			function init_auto(){
+				if ((H>23) || (H<4)){
+					midnight();
+				}
+				else if(H<6){
+					dawn();
+				}
+				else if(H<9){
+					morning();
+				}
+				else if(H<17){
+					noon();
+				}
+				else if(H<18){
+					afternoon();
+				}
+				else if(H<19){
+					sunset();
+				}
+				else if(H<23){
+					evening();
+				}
+				else{
+					midnight();
+				}
+			}
+
+			var i = 0;
+			
+			var speed = 50;
+			
+			function typeWriter() {
+				if (i < txt.length) {
+					var o = (i/txt.length*2);
+					var o = o.toFixed(0);
+					var o2 = o-1;
+					if (o2<0)
+						o2=0;
+					var o3 = String(o);
+					var p = "translate(-50%,50%) scale("+o2+")";
+					document.getElementById("quote").innerHTML += txt.charAt(i);
+					i++;
+					$(".jam").css("opacity",o3);
+					$(".bulat").css("transform",p).css("opacity",o2);
+					setTimeout(typeWriter, speed);
+				}
+			}
+			typeWriter();
+
+			
+			function dragElement(elmnt) {
+			  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+			  if (document.getElementById(elmnt.id + "header")) {
+			    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+			  } else {
+			    elmnt.onmousedown = dragMouseDown;
+			  }
+
+			  function dragMouseDown(e) {
+			    animasi();
+			    e = e || window.event;
+			    e.preventDefault();
+			    pos3 = e.clientX;
+			    pos4 = e.clientY;
+			    document.onmouseup = closeDragElement;
+			    document.onmousemove = elementDrag;
+			  }
+
+			  function elementDrag(e) {
+			    e = e || window.event;
+			    e.preventDefault();
+			    pos1 = pos3 - e.clientX;
+			    pos2 = pos4 - e.clientY;
+			    pos3 = e.clientX;
+			    pos4 = e.clientY;
+			    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+			    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+			  }
+
+			  function closeDragElement() {
+			    document.onmouseup = null;
+			    document.onmousemove = null;
+			    animasi();
+			  }
+			}
+
+			var mywindow = document.querySelector('#mywindow');
+			var myresize = document.querySelector('.myresize');
+			myresize.addEventListener('mousedown', initDrag, false);
+			var startX, startY, startWidth, startHeight;
+			function initDrag(e) {
+			   startX = e.clientX;
+			   startY = e.clientY;
+			   startWidth = parseInt(document.defaultView.getComputedStyle(mywindow).width, 10);
+			   startHeight = parseInt(document.defaultView.getComputedStyle(mywindow).height, 10);
+			   document.documentElement.addEventListener('mousemove', doDrag, false);
+			   document.documentElement.addEventListener('mouseup', stopDrag, false);
+			}
+
+			function doDrag(e) {
+			   mywindow.style.width = (startWidth + e.clientX - startX) + 'px';
+			   mywindow.style.height = (startHeight + e.clientY - startY) + 'px';
+			    animasi();
+			}
+
+			function stopDrag(e) {
+			    document.documentElement.removeEventListener('mousemove', doDrag, false);
+			    document.documentElement.removeEventListener('mouseup', stopDrag, false);
+			    animasi();
+			}
+			var elem = document.documentElement;
+			function openFullscreen() {
+			  if (elem.requestFullscreen) {
+			    elem.requestFullscreen();
+			  } else if (elem.mozRequestFullScreen) { /* Firefox */
+			    elem.mozRequestFullScreen();
+			  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+			    elem.webkitRequestFullscreen();
+			  } else if (elem.msRequestFullscreen) { /* IE/Edge */
+			    elem.msRequestFullscreen();
+			  }
+			}
+			function move(){
+				kali=20;
+				addanimation();
+				random1=(mywindow.offsetTop+(Math.floor(Math.random() * 10)-5)*kali);
+				random2=(mywindow.offsetLeft+(Math.floor(Math.random() * 10)-5)*kali);
+				if(random1>0 && random1<33)random1=33+20;
+				if(random1<0 && random1>-33)random1=-33-20;
+				if(random2>0 && random2<83)random2=83+20;
+				if(random2<0 && random2>-83)random2=-83-20;
+				if(random1==0 && random2==0)random1=-100;
+				mywindow.style.top  = random1 + 'px';
+				mywindow.style.left = random2 + 'px';
+				if(random1<0 || ((random1+mywindow.clientHeight)>window.innerHeight)){
+					mywindow.style.top = "calc(50% - "+mywindow.clientHeight/2+"px)";
+				}
+				if(random2<0  || ((random2+mywindow.clientWidth)>window.innerWidth)){
+					mywindow.style.left = "calc(50% - "+mywindow.clientWidth/2+"px)";
+				}
+			}
+			function move2(){
+				kali=50;
+				addanimation();
+				random1=(mywindow.offsetTop+(Math.floor(Math.random() * 10)-5)*kali);
+				random2=(mywindow.offsetLeft+(Math.floor(Math.random() * 10)-5)*kali);
+				if(random1>0 && random1<33)random1=33+20;
+				if(random1<0 && random1>-33)random1=-33-20;
+				if(random2>0 && random2<83)random2=83+20;
+				if(random2<0 && random2>-83)random2=-83-20;
+				if(random1==0 && random2==0)random1=-100;
+				mywindow.style.top  = random1 + 'px';
+				mywindow.style.left = random2 + 'px';
+				if(random1<0 || ((random1+mywindow.clientHeight)>window.innerHeight)){
+					mywindow.style.top = "calc(50% - "+mywindow.clientHeight/2+"px)";
+				}
+				if(random2<0  || ((random2+mywindow.clientWidth)>window.innerWidth)){
+					mywindow.style.left = "calc(50% - "+mywindow.clientWidth/2+"px)";
+				}
+			}
+			function addanimation(){
+			   var element = document.getElementById("mywindow");
+			   element.classList.add("myanimated");
+			}
+			function animasi() {
+			   var element = document.getElementById("mywindow");
+			   element.classList.toggle("myanimated");
+			}
+			var vid = document.getElementById("myVideo"); 
+			function playVid() { 
+				stopOpening();
+				openFullscreen();
+				$('#myVideo').show();
+				$('.vidcont').fadeIn();
+				localStorage.setItem("checked", "yoi");
+				$('#mywindow').fadeOut(300);
+			  	vid.play(); 
+			} 
+			vid.onended = function() {
+				playAudio();
+			    $('.vidcont').fadeOut();
+			    myclock();
+			}
+			function capital_letter(str) 
+			{
+				if (!str){
+					str='Salma';
+				}
+			    str = str.split(" ");
+			    for (var i = 0, x = str.length; i < x; i++) {
+			        str[i] = str[i][0].toUpperCase() + str[i].substr(1);
+			    }
+			    return str.join(" ").substr(0, 20);
+			}
+			function mywrite(){
+				openFullscreen();
+				playOpening();
+				nama = $('#mynama').val();
+				$('#mynama').val('');
+				nama = capital_letter(nama);
+				localStorage.setItem("nama", nama);
+				namaku='Salma';
+				mystart();
+			}
+			function mystart(){
+				$('#spannama').text(localStorage.getItem("nama"));
+				$('#myform').hide();
+				$('#mywindow').show();
+				resetposisi();
+			}
+			function reverse(){
+				stopOpening();
+				$('#myform').fadeIn();
+				$('#mywindow').hide();
+				$('.myclock').hide();
+				if(blur=="false"){
+					wpblur();
+				}
+				localStorage.clear();
+			}
+			function kembali(){
+				stopOpening();
+				localStorage.removeItem("checked");
+				if(blur=="false"){
+					wpblur();
+				}
+				$('#myform').hide();
+				$('#mywindow').fadeIn();
+				$('.myclock').hide();
+			}
+			selesai=false;	
+			function resetposisi(){
+				mywindow.style.top = "calc(50% - "+mywindow.clientHeight/2+"px)";
+				mywindow.style.left = "calc(50% - "+mywindow.clientWidth/2+"px)";
+			}
+			document.querySelector('#mynama').addEventListener('keypress', function (e) {
+			    if (e.key === 'Enter') {
+			      mywrite();
+			    }
+			});
+			function myclock(){
+				$('#spannama3').text(localStorage.getItem("nama"));
+				localStorage.setItem("checked", "yoi");
+				$('#myform').hide();
+				$('#mywindow').hide();
+				$('#myVideo').hide();
+				$('.myclock').show();
+			}
+			jalan=false;
+		
+			function tulis(waktu,ucapan){
+				$("#spannama2").text('Selamat '+waktu+' '+localStorage.getItem("nama")+', '+ucapan+'.');
+			}
+			function checkTime(i) {
+				if (i < 10) {i = "0" + i};
+				return i;
+			}
+			var elem = document.documentElement;
+			fs=false;
+			function openFullscreen() {
+				fs=true;
+				if (elem.requestFullscreen) {
+					elem.requestFullscreen();
+				} else if (elem.mozRequestFullScreen) { /* Firefox */
+					elem.mozRequestFullScreen();
+				} else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+					elem.webkitRequestFullscreen();
+				} else if (elem.msRequestFullscreen) { /* IE/Edge */
+					elem.msRequestFullscreen();
+				}
+			}		
+			function wpblur(){
+				$('.container').toggleClass("myoverlay");
+				localStorage.setItem("blur", blur);
+				if(blur=="true"){
+					blur="false";
+				}
+				else{
+					blur="true";
+				}
+			}
+			function playAudio() { 
+				var x = document.getElementById("myAudio"); 
+				x.volume = 0.15;
+				x.play(); 
+			}
+			function playOpening() { 
+				var x = document.getElementById("myOpening"); 
+				x.volume = 0.3;
+				x.play(); 
+				x.addEventListener("ended",function() {
+					stopOpening();
+				});
+			}
+			function stopOpening(){
+				var x = document.getElementById("myOpening"); 
+				x.pause();
+				x.currentTime = 0;
+				var x = document.getElementById("myAudio"); 
+				x.pause();
+				x.currentTime = 0;
+			}
+		</script>
+	</body>
+</html>
